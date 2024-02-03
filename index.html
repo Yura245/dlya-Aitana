@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Приглашение</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    #invite-container {
+      text-align: center;
+      position: relative;
+    }
+
+    #invitation-image {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      position: absolute;
+      top: -302px;
+      /* Отступ над текстом */
+      left: calc(50% - 150px);
+      /* Выравнивание по центру */
+    }
+
+    #yes-btn,
+    #no-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      position: absolute;
+    }
+
+    #yes-btn {
+      left: calc(50% - 70px);
+      /* Выравнивание по центру */
+    }
+
+    #no-btn {
+      left: calc(50% + 10px);
+      /* Отступ от кнопки "Да" */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="invite-container">
+    <img id="invitation-image" src="invite/img/sticker.jpg" alt="Invitation Image">
+    <h1>Пойдешь гулять со мной?</h1>
+    <div>
+      <button id="yes-btn" onclick="showResponse(true)">Да</button>
+      <button id="no-btn" onclick="showResponse(false)">Нет</button>
+    </div>
+  </div>
+
+  <script>
+    const squareSize = 200; // Размер квадрата
+    let noButtonClickCount = 0;
+
+    function showResponse(isYes) {
+      const inviteContainer = document.getElementById('invite-container');
+      const noBtn = document.getElementById('no-btn');
+      const invitationImage = document.getElementById('invitation-image');
+
+      if (isYes) {
+        // При нажатии "Да" меняем текст и добавляем новую фотографию
+        inviteContainer.innerHTML = '<h1>Круто, давай встретимся в воскресенье? А по времени договоримся))</h1>';
+        const newImage = document.createElement('img');
+        newImage.src = 'invite/img/cvety.jpg'; // Укажите путь к новой фотографии
+        newImage.alt = 'New Invitation Image';
+        newImage.style.width = '300px'; // Укажите размеры фотографии по вашему усмотрению
+        newImage.style.height = '300px';
+        inviteContainer.appendChild(newImage);
+      } else {
+        const maxTop = window.innerHeight - 50;
+        const maxLeft = window.innerWidth - 100;
+
+        let newPositionTop = Math.min(Math.floor(Math.random() * maxTop), maxTop);
+        let newPositionLeft = Math.min(Math.floor(Math.random() * maxLeft), maxLeft);
+
+        // Проверка границ перед изменением положения кнопки
+        newPositionTop = Math.max(newPositionTop, 0);
+        newPositionLeft = Math.max(newPositionLeft, 0);
+
+        // Проверка границ квадрата
+        newPositionTop = Math.min(newPositionTop, squareSize);
+        newPositionLeft = Math.min(newPositionLeft, squareSize);
+
+        noBtn.style.top = newPositionTop + 'px';
+        noBtn.style.left = newPositionLeft + 'px';
+
+        // Увеличиваем счетчик нажатий
+        noButtonClickCount++;
+
+        // После второго нажатия меняем текст и фотографию
+        if (noButtonClickCount === 2) {
+          invitationImage.src = 'invite/img/sticker (2).jpg';
+          inviteContainer.querySelector('h1').innerText = 'АХААХАХАХ, ну ты пыталась, давай соглашайся))';
+          newImage.style.width = '300px'; // Укажите размеры фотографии по вашему усмотрению
+          newImage.style.height = '300px';
+          inviteContainer.appendChild(newImage);
+        }
+      }
+    }
+  </script>
+
+</body>
+
+</html>
